@@ -23,18 +23,19 @@ namespace _1._2._16
             Rational x = new Rational(numer1, denom1);
             Rational y = new Rational(numer2, denom2);
 
-            Console.WriteLine($"x: {x.ToString()}");
-            Console.WriteLine($"y: {y.ToString()}");
+            Console.WriteLine($"x: {x}");
+            Console.WriteLine($"y: {y}");
             Console.WriteLine($"equals: {x.Equals(y)}");
+            Console.WriteLine($"==: {x == y}");
+            Console.WriteLine($"!=: {x != y}");
             Console.WriteLine($"plus: {x.Plus(y)}");
-            Console.WriteLine("+: ", x + y);
-            // ? 为什么不显示string呢
+            Console.WriteLine($"+: {x + y}");
             Console.WriteLine($"minus: {x.Minus(y)}");
-            Console.WriteLine("-: ", x - y);
+            Console.WriteLine($"-: {x - y}");
             Console.WriteLine($"times: {x.Times(y)}");
-            Console.WriteLine("*: ", x * y);
+            Console.WriteLine($"*: {x * y}");
             Console.WriteLine($"devides: {x.Devides(y)}");
-            Console.WriteLine("/: ", x / y);
+            Console.WriteLine($"/: {x / y}");
             Console.ReadLine();
 
 
@@ -48,10 +49,14 @@ namespace _1._2._16
         private int denominator;
         public Rational(int _numer, int _denom)
         {
+            if (_denom == 0)
+            {
+                throw new DivideByZeroException();
+            }
             numerator = _numer;
             denominator = _denom;
             Reduce();
-            // Todo: Avoid "0"
+            // Done: Avoid "0"
         }
 
         public Rational Plus(Rational _b)
@@ -122,11 +127,12 @@ namespace _1._2._16
 
         public Rational Devides(Rational _b)
         {
-            int tempn, tempd;
-            tempn = _b.numerator;
-            tempd = _b.denominator;
-            tempn = numerator * tempd;
-            tempd = denominator * tempn;
+            int bn, bd, tempn, tempd;
+            bn = _b.numerator;
+            bd = _b.denominator;
+            // 已修正变量错误
+            tempn = numerator * bd;
+            tempd = denominator * bn;
             Rational Rationaltemp = new Rational(tempn, tempd);
 
             return Rationaltemp;
@@ -144,8 +150,9 @@ namespace _1._2._16
 
         public Boolean Equals(Rational that)
         {
+            if (this.numerator == 0 && that.numerator == 0)
+            { return true; }
             Reduce();
-            that.Reduce();
             if ((this.numerator == that.numerator) && (this.denominator == that.denominator))
             { return true; }
             else
@@ -154,18 +161,19 @@ namespace _1._2._16
 
         public static Boolean operator ==(Rational _a, Rational _b)
         {
-            _a.Reduce();
-            _b.Reduce();
+            if (_a.numerator == 0 && _b.numerator == 0)
+            { return true; }
             if ((_a.numerator == _b.numerator) && (_a.denominator == _b.denominator))
             { return true; }
             else
             { return false; }
+
         }
 
         public static Boolean operator !=(Rational _a, Rational _b)
         {
-            _a.Reduce();
-            _b.Reduce();
+            if (_a.numerator == 0 && _b.numerator == 0)
+            { return false; }
             if ((_a.numerator == _b.numerator) && (_a.denominator == _b.denominator))
             { return false; }
             else
